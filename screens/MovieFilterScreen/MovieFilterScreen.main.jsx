@@ -20,28 +20,32 @@ export default function MovieFilterScreen({ navigation, route }) {
 
   // TODO: Destructure navigation params from props.
 
-  useEffect(
-    () => {
-      // TODO: Recieve actors passed by MovieListScreen here, and update
-      // our local state using setActors.
-    },
-    [
-      /* TODO: Insert dependent variables here. */
-    ]
-  );
+  useEffect(() => {
+    // TODO: Recieve actors passed by MovieListScreen here, and update
+    // our local state using setActors.
+    setActors(route.params.actors);
+  }, [navigation /* TODO: Insert dependent variables here. */]);
 
-  useEffect(
-    () => {
-      // TODO: Override the default back button to...
-      //  1) Hide the left button.
-      //  2) Show a "Done" button on the right that navigates back to the MovieListScreen
-      //      and passes back our current list of actors via params.
-      // https://reactnavigation.org/docs/header-buttons/
-    },
-    [
-      /* TODO: Insert dependent state variables here. */
-    ]
-  );
+  useEffect(() => {
+    // TODO: Override the default back button to...
+    //  1) Hide the left button.
+    //  2) Show a "Done" button on the right that navigates back to the MovieListScreen
+    //      and passes back our current list of actors via params.
+    // https://reactnavigation.org/docs/header-buttons/
+    navigation.setOptions({
+      headerLeft: null,
+      headerRight: () => (
+        <Button
+          title="Done"
+          onPress={() => {
+            navigation.navigate("All Movies", {
+              post: actors,
+            });
+          }}
+        />
+      ),
+    });
+  }, [actors /* TODO: Insert dependent state variables here. */]);
 
   // When we tap an actor cell, flip the boolean!
   const didTapActorCell = (actor) => {
@@ -64,7 +68,9 @@ export default function MovieFilterScreen({ navigation, route }) {
       <TouchableOpacity
         activeOpacity={0.8}
         key={index}
-        onPress={() => didTapActorCell(item)}
+        onPress={() => {
+          didTapActorCell(item);
+        }}
       >
         <View style={styles.filtercell}>
           <Text style={{ fontFamily: "Avenir", fontSize: 15 }}>
